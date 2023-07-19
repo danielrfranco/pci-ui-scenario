@@ -7,6 +7,16 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
 const dateRenderer = (props: {value: string}): string => formatDate(props.value);
+const booleanishRenderer = (props: {value: 'Y' | 'N' | 'n/a'}): string => {
+  switch(props.value) {
+    case 'Y': 
+      return 'Yes';
+    case 'N':
+      return 'No';
+    default:
+    return '';
+  }
+};
 
 const columnDefs: ColDef[] = [
   { field: "designation", headerName: "Designation", filter: 'agNumberColumnFilter'},
@@ -17,7 +27,7 @@ const columnDefs: ColDef[] = [
   { field: "q_au_2", headerName: "Q (au)", filter: 'agNumberColumnFilter'},
   { field: "period_yr", headerName: "Period (yr)", filter: 'agNumberColumnFilter'},
   { field: "i_deg", headerName: "Inclination (deg)", filter: 'agNumberColumnFilter'},
-  { field: "pha", headerName: "Potentially Hazardous", filter: true},
+  { field: "pha", headerName: "Potentially Hazardous", filter: true, cellRenderer: booleanishRenderer},
   { field: "orbit_class", headerName: "Orbit Class", enableRowGroup: true, filter: 'agTextColumnFilter'},
 ];
 
