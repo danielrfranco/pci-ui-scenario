@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { useRef } from "react";
 
+const numberParser = (text: string | null) => text;
 const dateRenderer = (props: {value: string}): string => formatDate(props.value);
 const booleanishRenderer = (props: {value: 'Y' | 'N' | 'n/a'}): string => {
   switch(props.value) {
@@ -19,14 +20,14 @@ const booleanishRenderer = (props: {value: 'Y' | 'N' | 'n/a'}): string => {
 };
 
 const columnDefs: ColDef[] = [
-  { field: "designation", headerName: "Designation", filter: 'agNumberColumnFilter'},
+  { field: "designation", headerName: "Designation", filter: 'agTextColumnFilter'},
   { field: "discovery_date", headerName: "Discovery Date", filter: 'agDateColumnFilter', cellRenderer: dateRenderer},
-  { field: "h_mag", headerName: "H (mag)", filter: 'agNumberColumnFilter'},
-  { field: "moid_au", headerName: "MOID (au)", filter: 'agNumberColumnFilter'},
-  { field: "q_au_1", headerName: "q (au)", filter: 'agNumberColumnFilter'},
-  { field: "q_au_2", headerName: "Q (au)", filter: 'agNumberColumnFilter'},
-  { field: "period_yr", headerName: "Period (yr)", filter: 'agNumberColumnFilter'},
-  { field: "i_deg", headerName: "Inclination (deg)", filter: 'agNumberColumnFilter'},
+  { field: "h_mag", headerName: "H (mag)", filter: 'agNumberColumnFilter', filterParams: { numberParser }},
+  { field: "moid_au", headerName: "MOID (au)", filter: 'agNumberColumnFilter', filterParams: { numberParser }},
+  { field: "q_au_1", headerName: "q (au)", filter: 'agNumberColumnFilter', filterParams: { numberParser }},
+  { field: "q_au_2", headerName: "Q (au)", filter: 'agNumberColumnFilter', filterParams: { numberParser }},
+  { field: "period_yr", headerName: "Period (yr)", filter: 'agNumberColumnFilter', filterParams: { numberParser }},
+  { field: "i_deg", headerName: "Inclination (deg)", filter: 'agNumberColumnFilter', filterParams: { numberParser }},
   { field: "pha", headerName: "Potentially Hazardous", filter: true, cellRenderer: booleanishRenderer},
   { field: "orbit_class", headerName: "Orbit Class", enableRowGroup: true, filter: 'agTextColumnFilter'},
 ];
