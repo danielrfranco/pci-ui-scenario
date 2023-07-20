@@ -1,10 +1,10 @@
-import { useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { ColDef } from "ag-grid-community";
 import formatDate from "./formatDate";
 import data from "./near-earth-asteroids.json";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
+import { useRef } from "react";
 
 const dateRenderer = (props: {value: string}): string => formatDate(props.value);
 const booleanishRenderer = (props: {value: 'Y' | 'N' | 'n/a'}): string => {
@@ -32,15 +32,31 @@ const columnDefs: ColDef[] = [
 ];
 
 const NeoGrid = (): JSX.Element => {
+  const gridRef = useRef<any>();
+
+  const resetGrid = () => {
+    gridRef.current.api.setFilterModel(null);
+    gridRef.current.columnApi.applyColumnState({
+      defaultState: { sort: null },
+    });
+  };
+
   return (
-    <div className="ag-theme-alpine" style={{ height: 900, width: 1920 }}>
-      <AgGridReact
-        rowData={data}
-        columnDefs={columnDefs}
-        rowGroupPanelShow={'always'}
-        defaultColDef={{sortable: true}}
-      />
-    </div>
+    <>
+      <div className="grid-header" style={{ display: 'flex', gap: 15, alignItems: 'center' }}>
+        <h1>Near-Earth Object Overview</h1>
+        <button onClick={resetGrid}>Clear Filters and Sorters</button>
+      </div>
+      <div className="ag-theme-alpine" style={{ height: 900, width: 1920 }}>
+        <AgGridReact
+          ref={gridRef}
+          rowData={data}
+          columnDefs={columnDefs}
+          rowGroupPanelShow={'always'}
+          defaultColDef={{sortable: true}}
+        />
+      </div>
+    </>
   );
 };
 
